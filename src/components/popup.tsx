@@ -39,7 +39,7 @@ const Popup: React.FC = () => {
     }, []);
 
     const handleAuthenticate = () => {
-        Chrome.identity.getAuthToken({ interactive: true }, (token: string | undefined) => {
+        chrome.identity.getAuthToken({ interactive: true }, (token: string | undefined) => {
             if (token) {
                 setAuthenticated(true);
                 setSnackbarMessage('Authentication successful');
@@ -75,25 +75,69 @@ const Popup: React.FC = () => {
             <Box sx={{ width: 350, height: 500, display: 'flex', flexDirection: 'column' }}>
                 <AppBar position="static">
                     <Toolbar>
-                        <Typograhy variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             Job Listings Saver
                         </Typography>
-                        <IconButton>
+                        <IconButton color="inherit" onClick={handleAuthenticate}>
                             <LoginIcon />
                         </IconButton>
-
                     </Toolbar>
                 </AppBar>
-
-
-
-
+                <Box sx={{ p:2, flexGrow: 1, overFlowY: 'auto' }}>
+                    <TextField 
+                        fullWidth
+                        label="Google Sheets ID"
+                        value={spreadsheetId}
+                        onChange = {(e) => setSpreadsheetId(e.target.value)}
+                        margin ="normal"
+                        variant="outlined"
+                    />
+                    <TextField 
+                        fullWidth
+                        label="Job Title"
+                        value={jobTitle}
+                        onChange = {(e) => setJobTitle(e.target.value)}
+                        margin="normal"
+                        variant='outlined'
+                    />
+                    <TextField 
+                        fullWidth
+                        label="Company"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
+                        margin="normal"
+                        variant="outlined"
+                    />
+                    <TextField 
+                        fullWidth
+                        label="URL"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        margin="normal"
+                        variant="outlined"
+                    />
+               </Box>
+               <Box sx={{ p: 2 }}>
+                <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSave}
+                    startIcon={<SaveIcon />}
+                >
+                    Save Listings
+                </Button>
+               </Box>
             </Box>
-
-
-
-
-
+            <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={() => setSnackbarOpen(false)}
+                message={snackbarMessage}
+            />
         </ThemeProvider>
-    )
-}
+    );
+};
+
+export default Popup;
